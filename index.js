@@ -1,9 +1,9 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const axios = require("axios");
-const pdf = require("html-pdf");
-var html = fs.readFileSync('./index1.html', 'utf8');
-const options = { format: 'Letter'};
+// const pdf = require("html-pdf");
+// var html = fs.readFileSync('./index1.html', 'utf8');
+// const options = { format: 'Letter'};
 
 let github; //response.data.github;
 
@@ -280,8 +280,11 @@ getuser(github,color)
           createPDF();
         })  
     }
-
+    
     function createPDF(){
+      const pdf = require("html-pdf");
+      var html = fs.readFileSync('./index1.html', 'utf8');
+      const options = { format: 'Letter'};
       console.log("4");
       pdf.create(html, options).toFile('./index1.pdf', function(err, res) {
       if (err) return console.log(err);
