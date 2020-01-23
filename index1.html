@@ -1,43 +1,4 @@
-const inquirer = require("inquirer");
-const fs = require("fs");
-const axios = require("axios");
-const pdf = require('html-pdf');
-var html;
-
-let github; //response.data.github;
-
-  //file written successfully
-  const colors = {
-    green: {
-      wrapperBackground: "#E6E1C3",
-      headerBackground: "#C1C72C",
-      headerColor: "black",
-      photoBorderColor: "#black"
-    },
-    blue: {
-      wrapperBackground: "#5F64D3",
-      headerBackground: "#26175A",
-      headerColor: "white",
-      photoBorderColor: "#73448C"
-    },
-    pink: {
-      wrapperBackground: "#879CDF",
-      headerBackground: "#FF8374",
-      headerColor: "white",
-      photoBorderColor: "#FEE24C"
-    },
-    red: {
-      wrapperBackground: "#DE9967",
-      headerBackground: "#870603",
-      headerColor: "white",
-      photoBorderColor: "white"
-    }
-  };
-
-function generateHTML(data) {
-    console.log("Data: ", data);
-    console.log("2");
-    return `<!DOCTYPE html>
+<!DOCTYPE html>
     <html lang="en">
         <head>
         <meta charset="UTF-8" />
@@ -63,7 +24,7 @@ function generateHTML(data) {
             height: 100%;
             }
             .wrapper {
-            background-color: ${colors[data.color].wrapperBackground};
+            background-color: #5F64D3;
             padding-top: 100px;
             }
             body {
@@ -105,8 +66,8 @@ function generateHTML(data) {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            background-color: ${colors[data.color].headerBackground};
-            color: ${colors[data.color].headerColor};
+            background-color: #26175A;
+            color: white;
             padding: 10px;
             width: 95%;
             border-radius: 6px;
@@ -117,7 +78,7 @@ function generateHTML(data) {
             border-radius: 50%;
             object-fit: cover;
             margin-top: -75px;
-            border: 6px solid ${colors[data.color].photoBorderColor};
+            border: 6px solid #73448C;
             box-shadow: rgba(0, 0, 0, 0.3) 4px 1px 20px 4px;
             }
             .photo-header h1, .photo-header h2 {
@@ -160,8 +121,8 @@ function generateHTML(data) {
             .card {
                 padding: 20px;
                 border-radius: 6px;
-                background-color: ${colors[data.color].headerBackground};
-                color: ${colors[data.color].headerColor};
+                background-color: #26175A;
+                color: white;
                 margin: 20px;
             }
             
@@ -186,35 +147,35 @@ function generateHTML(data) {
         <body>
         <div class="wrapper">
         <div class="photo-header">
-            <img src="${data.avatar_url}" alt="Photo of ${data.name}" />
+            <img src="https://avatars2.githubusercontent.com/u/54644181?v=4" alt="Photo of Caitlin Trask" />
             <h1>Hi!</h1>
             <h2>
-            My name is ${data.name}!</h1>
-            <h5>${data.company}</h5>
+            My name is Caitlin Trask!</h1>
+            <h5>VF Corporation</h5>
             <nav class="links-nav">
-                <a class="nav-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/${data.location}"><i class="fas fa-location-arrow"></i> ${data.location}</a>
-                <a class="nav-link" target="_blank" rel="noopener noreferrer" href="${data.github}"><i class="fab fa-github-alt"></i> GitHub</a>
-            <a class="nav-link" target="_blank" rel="noopener noreferrer" href="${data.blog}"><i class="fas fa-rss"></i> Blog</a>
+                <a class="nav-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/Denver, CO"><i class="fas fa-location-arrow"></i> Denver, CO</a>
+                <a class="nav-link" target="_blank" rel="noopener noreferrer" href="undefined"><i class="fab fa-github-alt"></i> GitHub</a>
+            <a class="nav-link" target="_blank" rel="noopener noreferrer" href=""><i class="fas fa-rss"></i> Blog</a>
             </nav>
         </div>
         <main>
             <div class="container">
             <div class="row">
                 <div class="col">
-                <h3>${data.bio}</h3>
+                <h3>An e-commerce merchandiser and full stack web developer.</h3>
                 </div>
             </div>
                 <div class="row">
                 <div class="col">
                     <div class="card">
                     <h3>Public Repositories</h3>
-                    <h4>${data.public_repos}</h4>
+                    <h4>16</h4>
                     </div>
                 </div>
                 <div class="col">
                 <div class="card">
                     <h3>Followers</h3>
-                    <h4>${data.followers}</h4>
+                    <h4>3</h4>
                 </div>
                 </div>
                 </div>
@@ -222,13 +183,13 @@ function generateHTML(data) {
                 <div class="col">
                 <div class="card">
                 <h3>GitHub Stars</h3>
-                <h4>${data}</h4>
+                <h4>[object Object]</h4>
                 </div>
                 </div>
                 <div class="col">
                 <div class="card">
                 <h3>Following</h3>
-                <h4>${data.following}</h4>
+                <h4>0</h4>
                 </div>
                 </div>
                 </div>
@@ -236,47 +197,4 @@ function generateHTML(data) {
         </main>
     </div>
     </body> 
-    </html>`
-}
-
-// gather info from the user (inquierer)
-inquirer
-  .prompt([
-    {
-      type: "list",
-      message: "What is your favorite color?",
-      name: "color",
-      choices: ["red", "blue", "green", "pink"]
-    },
-    {
-      type: "input",
-      message: "What is your username?",
-      name: "username"
-    }
-  ])
-  .then(function(response) {
-    console.log(response);
-
-    color = response.color
-    github = response.username
-
-
-getuser(github,color) 
-  });
-
-    // go to api github (gather all the info)
-
-    function getuser(github,color) {
-      console.log("1");
-        let profileResponse;
-        axios.get(`https://api.github.com/users/${github}`)
-        .then(function(response) {
-            profileResponse = generateHTML({...response.data, ...{color}}); //spread operator - adding another property onto this object
-        fs.writeFileSync("index1.html", profileResponse, function(err) {
-          console.log("3");
-            if (err) throw err;
-          })
-        })  
-    }
-        // call a function with the info an retruen the html template
-                // convert the html to PDF
+    </html>
