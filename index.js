@@ -1,8 +1,9 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const axios = require("axios");
-const pdf = require('html-pdf');
-var html;
+const pdf = require("html-pdf");
+var html = fs.readFileSync('./index1.html', 'utf8');
+const options = { format: 'Letter'};
 
 let github; //response.data.github;
 
@@ -276,7 +277,16 @@ getuser(github,color)
           console.log("3");
             if (err) throw err;
           })
+          createPDF();
         })  
     }
+
+    function createPDF(){
+      console.log("4");
+      pdf.create(html, options).toFile('./index1.pdf', function(err, res) {
+      if (err) return console.log(err);
+      console.log(res);
+    });
+    };
         // call a function with the info an retruen the html template
                 // convert the html to PDF
